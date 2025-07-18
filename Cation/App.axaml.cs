@@ -1,21 +1,22 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Data.Core;
 using Avalonia.Data.Core.Plugins;
-using System.Linq;
 using Avalonia.Markup.Xaml;
 using Cation.ViewModels;
 using Cation.Views;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace Cation;
 
-public partial class App : Application
+public class App : Application
 {
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
     }
 
+    [ExcludeFromCodeCoverage]
     public override void OnFrameworkInitializationCompleted()
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
@@ -32,6 +33,7 @@ public partial class App : Application
         base.OnFrameworkInitializationCompleted();
     }
 
+    [ExcludeFromCodeCoverage]
     private void DisableAvaloniaDataAnnotationValidation()
     {
         // Get an array of plugins to remove
