@@ -1,5 +1,5 @@
-using System.Text.Json.Serialization;
 using Cation.Models;
+using System.Text.Json.Serialization;
 
 namespace Cation.Core.Serialization;
 

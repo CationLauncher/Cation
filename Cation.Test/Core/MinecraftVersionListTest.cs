@@ -4,7 +4,8 @@ namespace Cation.Test.Core;
 
 public class MinecraftVersionListTest
 {
-    [Test, Order(1)]
+    [Test]
+    [Order(1)]
     public async Task GetVersionList()
     {
         var versionList = await MinecraftGameDownloader.GetVersionListAsync();
@@ -18,7 +19,8 @@ public class MinecraftVersionListTest
         }
     }
 
-    [Test, Order(2)]
+    [Test]
+    [Order(2)]
     public async Task GetLatestVersion()
     {
         var latestVersion = await MinecraftGameDownloader.GetLatestVersionAsync();

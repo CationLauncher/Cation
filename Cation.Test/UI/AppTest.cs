@@ -10,13 +10,13 @@ namespace Cation.Test.UI;
 public class AppTest
 {
     private static AppBuilder? _builder;
-    
+
     private static AppBuilder BuildAvaloniaApp()
     {
         _builder = Program.BuildAvaloniaApp().UseHeadless(new AvaloniaHeadlessPlatformOptions());
         return _builder;
     }
-    
+
     [AvaloniaTest]
     public void App()
     {

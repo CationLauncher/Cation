@@ -1,8 +1,8 @@
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Text.Json;
 using Cation.Core.Serialization;
 using Cation.Models;
+using System.Net.Http;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace Cation.Core.GameInstaller;
 

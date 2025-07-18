@@ -9,6 +9,7 @@ public static class MinecraftVersionManifest
     {
         [JsonPropertyName("release")]
         public string Release { get; set; }
+
         [JsonPropertyName("snapshot")]
         public string Snapshot { get; set; }
     }
@@ -17,16 +18,22 @@ public static class MinecraftVersionManifest
     {
         [JsonPropertyName("id")]
         public string Id { get; set; }
+
         [JsonPropertyName("type")]
         public string Type { get; set; }
+
         [JsonPropertyName("url")]
         public string Url { get; set; }
+
         [JsonPropertyName("time")]
         public string Time { get; set; }
+
         [JsonPropertyName("releaseTime")]
         public string ReleaseTime { get; set; }
+
         [JsonPropertyName("sha1")]
         public string Sha1 { get; set; }
+
         [JsonPropertyName("complianceLevel")]
         public int ComplianceLevel { get; set; }
     }
@@ -35,6 +42,7 @@ public static class MinecraftVersionManifest
     {
         [JsonPropertyName("latest")]
         public LatestInfo Latest { get; set; }
+
         [JsonPropertyName("versions")]
         public List<VersionEntry> Versions { get; set; }
     }

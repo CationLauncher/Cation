@@ -8,7 +8,7 @@ public class MainWindowTest
 {
     private MainWindow _mainWindow;
     private MainWindowViewModel _viewModel;
-    
+
     [SetUp]
     public void Setup()
     {
