@@ -20,6 +20,10 @@ indent_style = tab
 [*.{csproj,xml,manifest}]
 indent_size = 2
 
+# Configurations
+[*.{yml,yaml,json}]
+indent_size = 2
+
 # External Managed Files
 [*.{svg,DotSettings}]
 max_line_length = 999999
