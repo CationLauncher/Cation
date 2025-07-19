@@ -1,7 +1,8 @@
-using Cation.Core.Serialization;
-using Cation.Models;
+using Cation.Models.Minecraft;
+using System;
+using System.IO;
 using System.Net.Http;
-using System.Text.Json;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace Cation.Core.GameInstaller;
@@ -10,25 +11,49 @@ public static class MinecraftGameDownloader
 {
     private const string VersionManifestUrl = "https://launchermeta.mojang.com/mc/game/version_manifest_v2.json";
 
-    private static MinecraftVersionManifest.VersionManifest? _versionListCache;
+    private static VersionManifest? _versionListCache;
 
-    public static async Task<MinecraftVersionManifest.VersionManifest?> GetVersionListAsync()
+    public static async Task<VersionManifest?> GetVersionListAsync()
     {
         if (_versionListCache is not null)
             return _versionListCache;
 
         using var httpClient = new HttpClient();
         await using var stream = await httpClient.GetStreamAsync(VersionManifestUrl);
-        _versionListCache =
-            await JsonSerializer.DeserializeAsync<MinecraftVersionManifest.VersionManifest>(stream,
-                JsonContext.Default.VersionManifest);
+        _versionListCache = await JsonContext.DeserializeAsync<VersionManifest>(stream);
         return _versionListCache;
     }
 
-    public static async Task<MinecraftVersionManifest.VersionEntry?> GetLatestVersionAsync()
+    public static async Task<string?> GetLatestVersionId()
     {
         var versionList = await GetVersionListAsync();
-        var latestVersionId = versionList?.Latest.Release;
-        return versionList?.Versions.Find(v => v.Id == latestVersionId);
+        return versionList?.Latest.Release;
+    }
+
+    public static async Task<VersionManifest.VersionInfo?> GetVersionInfoAsync(string id)
+    {
+        var versionList = await GetVersionListAsync();
+        return versionList?.Versions.Find(v => v.Id == id);
+    }
+
+    public static async Task<Client?> GetClientAsync(string id)
+    {
+        var versionInfo = await GetVersionInfoAsync(id);
+        if (versionInfo is null)
+            return null;
+
+        using var httpClient = new HttpClient();
+        var responseBytes = await httpClient.GetByteArrayAsync(versionInfo.Url);
+
+        var hash = SHA1.HashData(responseBytes);
+        var hashString = Convert.ToHexString(hash).ToLowerInvariant();
+        if (!hashString.Equals(versionInfo.Sha1, StringComparison.InvariantCultureIgnoreCase))
+        {
+            Console.WriteLine($"SHA1 validation failed. Expected: {versionInfo.Sha1}, actual: {hashString}");
+            return null;
+        }
+
+        using var stream = new MemoryStream(responseBytes);
+        return await JsonContext.DeserializeAsync<Client>(stream);
     }
 }
