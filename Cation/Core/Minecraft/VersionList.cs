@@ -5,9 +5,9 @@ using System.Net.Http;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 
-namespace Cation.Core.GameInstaller;
+namespace Cation.Core.Minecraft;
 
-public static class MinecraftGameDownloader
+public static class VersionList
 {
     private const string VersionManifestUrl = "https://launchermeta.mojang.com/mc/game/version_manifest_v2.json";
 

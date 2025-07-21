@@ -1,4 +1,4 @@
-﻿using Cation.Core.GameInstaller;
+﻿using Cation.Core.Minecraft;
 
 namespace Cation.Test.Core;
 
@@ -8,13 +8,13 @@ public class MinecraftVersionListTest
     public async Task Setup()
     {
         // Cache the version list to avoid repeated network requests
-        await MinecraftGameDownloader.GetVersionListAsync();
+        await VersionList.GetVersionListAsync();
     }
 
     [Test]
     public async Task GetVersionList()
     {
-        var versionList = await MinecraftGameDownloader.GetVersionListAsync();
+        var versionList = await VersionList.GetVersionListAsync();
         Assert.That(versionList, Is.Not.Null);
 
         using (Assert.EnterMultipleScope())
@@ -28,10 +28,10 @@ public class MinecraftVersionListTest
     [Test]
     public async Task GetLatestVersionInfo()
     {
-        var latestVersionId = await MinecraftGameDownloader.GetLatestVersionId();
+        var latestVersionId = await VersionList.GetLatestVersionId();
         Assert.That(latestVersionId, Is.Not.Null);
 
-        var latestVersionInfo = await MinecraftGameDownloader.GetVersionInfoAsync(latestVersionId);
+        var latestVersionInfo = await VersionList.GetVersionInfoAsync(latestVersionId);
         Assert.That(latestVersionInfo, Is.Not.Null);
         using (Assert.EnterMultipleScope())
         {
@@ -53,10 +53,10 @@ public class MinecraftVersionListTest
     [TestCase("1.17")]
     public async Task GetClient(string id)
     {
-        var versionList = await MinecraftGameDownloader.GetVersionListAsync();
+        var versionList = await VersionList.GetVersionListAsync();
         Assert.That(versionList, Is.Not.Null);
 
-        var client = await MinecraftGameDownloader.GetClientAsync(id);
+        var client = await VersionList.GetClientAsync(id);
         Assert.That(client, Is.Not.Null);
         using (Assert.EnterMultipleScope())
         {
@@ -91,7 +91,7 @@ public class MinecraftVersionListTest
     [Test]
     public async Task GetClientNotFound()
     {
-        var client = await MinecraftGameDownloader.GetClientAsync("0.0");
+        var client = await VersionList.GetClientAsync("0.0");
         Assert.That(client, Is.Null);
     }
 }
