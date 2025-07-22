@@ -38,8 +38,8 @@ public class MinecraftVersionListTest
             Assert.That(latestVersionInfo.Id, Is.Not.Empty);
             Assert.That(latestVersionInfo.Type, Is.Not.Empty);
             Assert.That(latestVersionInfo.Url, Is.Not.Empty);
-            Assert.That(latestVersionInfo.Time, Is.Not.Empty);
-            Assert.That(latestVersionInfo.ReleaseTime, Is.Not.Empty);
+            Assert.That(latestVersionInfo.Time, Is.Not.Default);
+            Assert.That(latestVersionInfo.ReleaseTime, Is.Not.Default);
             Assert.That(latestVersionInfo.Sha1, Is.Not.Empty);
             Assert.That(latestVersionInfo.ComplianceLevel, Is.Zero.Or.EqualTo(1));
         }
@@ -68,8 +68,8 @@ public class MinecraftVersionListTest
             Assert.That(client.Libraries, Is.Not.Null);
             Assert.That(client.MainClass, Is.Not.Empty);
             Assert.That(client.MinimumLauncherVersion, Is.GreaterThan(0));
-            Assert.That(client.ReleaseTime, Is.Not.Empty);
-            Assert.That(client.Time, Is.Not.Empty);
+            Assert.That(client.ReleaseTime, Is.Not.Default);
+            Assert.That(client.Time, Is.Not.Default);
             Assert.That(client.Type, Is.Not.Empty);
         }
 

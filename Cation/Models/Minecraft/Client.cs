@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
@@ -42,10 +43,10 @@ public class Client
     public int MinimumLauncherVersion { get; set; }
 
     [JsonPropertyName("releaseTime")]
-    public string ReleaseTime { get; set; } = string.Empty;
+    public DateTime ReleaseTime { get; set; }
 
     [JsonPropertyName("time")]
-    public string Time { get; set; } = string.Empty;
+    public DateTime Time { get; set; }
 
     [JsonPropertyName("type")]
     public string Type { get; set; } = string.Empty;
