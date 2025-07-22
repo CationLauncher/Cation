@@ -15,7 +15,7 @@ public class EnvJavaFinder : IJavaFinder
         var javaHome = Environment.GetEnvironmentVariable("JAVA_HOME");
         if (!string.IsNullOrEmpty(javaHome))
         {
-            var javaPath = Path.Combine(javaHome, "bin", JavaFinder.JavaExecutableName);
+            var javaPath = Path.Combine(javaHome, "bin", JavaManager.JavaExecutableName);
             if (File.Exists(javaPath))
                 result.Add(javaPath);
         }
@@ -25,7 +25,7 @@ public class EnvJavaFinder : IJavaFinder
         if (!string.IsNullOrEmpty(path))
         {
             result.AddRange(from p in path.Split(Path.PathSeparator)
-                select Path.Combine(p, JavaFinder.JavaExecutableName)
+                select Path.Combine(p, JavaManager.JavaExecutableName)
                 into javaPath
                 where File.Exists(javaPath)
                 where !(javaPath == "/usr/bin/java" && OperatingSystem.IsMacOS()) // Ignore MacOS java loader

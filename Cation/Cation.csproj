@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <AvaloniaResource Include="Assets\**" />
+    <AvaloniaResource Include="Assets/**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,4 +26,20 @@
     <PackageReference Include="SkiaSharp" Version="3.119.0" />
     <PackageReference Include="System.Text.Json" Version="9.0.7" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Core/Java/JavaTest/JavaTest.class">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>JavaTest.class</TargetPath>
+    </None>
+  </ItemGroup>
+
+  <Target Name="BuildJavaClass" BeforeTargets="BeforeBuild"
+        Inputs="Core/Java/JavaTest/JavaTest.java"
+        Outputs="Core/Java/JavaTest/JavaTest.class">
+    <Exec Command="javac -source 8 -target 8 -Xlint:-options Core/Java/JavaTest/JavaTest.java -d Core/Java/JavaTest" />
+  </Target>
+  <Target Name="CleanJavaClass" AfterTargets="Clean">
+    <Delete Files="Core/Java/JavaTest/JavaTest.class" />
+  </Target>
 </Project>

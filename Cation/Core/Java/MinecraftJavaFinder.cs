@@ -30,7 +30,7 @@ public class MinecraftJavaFinder : IJavaFinder
         var result = new List<string>();
         foreach (var javaPaths in from runtime in runtimes
                  where Directory.Exists(runtime)
-                 select JavaFinder.FindJavaBinPathRecurse(runtime))
+                 select JavaManager.FindJavaBinPathRecurse(runtime))
         {
             result.AddRange(javaPaths);
         }

@@ -6,6 +6,6 @@ public class MacJavaFinder : IJavaFinder
 {
     public IEnumerable<string> Find()
     {
-        return JavaFinder.FindJavaBinPathRecurse("/Library/Java/JavaVirtualMachines");
+        return JavaManager.FindJavaBinPathRecurse("/Library/Java/JavaVirtualMachines");
     }
 }
