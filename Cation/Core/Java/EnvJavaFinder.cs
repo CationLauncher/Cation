@@ -15,9 +15,10 @@ public class EnvJavaFinder : IJavaFinder
         var javaHome = Environment.GetEnvironmentVariable("JAVA_HOME");
         if (!string.IsNullOrEmpty(javaHome))
         {
-            var javaPath = Path.Combine(javaHome, "bin", JavaManager.JavaExecutableName);
+            var binPath = Path.Combine(javaHome, "bin");
+            var javaPath = Path.Combine(binPath, JavaManager.JavaExecutableName);
             if (File.Exists(javaPath))
-                result.Add(javaPath);
+                result.Add(binPath);
         }
 
         // PATH
@@ -25,11 +26,10 @@ public class EnvJavaFinder : IJavaFinder
         if (!string.IsNullOrEmpty(path))
         {
             result.AddRange(from p in path.Split(Path.PathSeparator)
-                select Path.Combine(p, JavaManager.JavaExecutableName)
-                into javaPath
+                let javaPath = Path.Combine(p, JavaManager.JavaExecutableName)
                 where File.Exists(javaPath)
                 where !(javaPath == "/usr/bin/java" && OperatingSystem.IsMacOS()) // Ignore MacOS java loader
-                select javaPath);
+                select p);
         }
 
         return result;
