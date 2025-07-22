@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
@@ -18,6 +19,11 @@ public class VersionManifest
 
         [JsonPropertyName("snapshot")]
         public required string Snapshot { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Release}";
+        }
     }
 
     public class VersionInfo
@@ -32,15 +38,20 @@ public class VersionManifest
         public required string Url { get; set; }
 
         [JsonPropertyName("time")]
-        public required string Time { get; set; }
+        public required DateTime Time { get; set; }
 
         [JsonPropertyName("releaseTime")]
-        public required string ReleaseTime { get; set; }
+        public required DateTime ReleaseTime { get; set; }
 
         [JsonPropertyName("sha1")]
         public required string Sha1 { get; set; }
 
         [JsonPropertyName("complianceLevel")]
         public required int ComplianceLevel { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Id}, {Type}";
+        }
     }
 }

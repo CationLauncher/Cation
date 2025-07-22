@@ -20,7 +20,9 @@ public static class VersionList
 
         using var httpClient = new HttpClient();
         await using var stream = await httpClient.GetStreamAsync(VersionManifestUrl);
-        _versionListCache = await JsonContext.DeserializeAsync<VersionManifest>(stream);
+        var manifest = await JsonContext.DeserializeAsync<VersionManifest>(stream);
+        manifest?.Versions.Sort((a, b) => b.ReleaseTime.CompareTo(a.ReleaseTime));
+        _versionListCache = manifest;
         return _versionListCache;
     }
 
