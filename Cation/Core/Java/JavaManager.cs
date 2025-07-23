@@ -24,7 +24,19 @@ public static class JavaManager
     {
         var result = new HashSet<string>();
         foreach (var path in Finders.SelectMany(finder => finder.Find()))
-            result.Add(Path.GetFullPath(path));
+        {
+            try
+            {
+                var linkTarget = new FileInfo(path).ResolveLinkTarget(true);
+                var finalPath = linkTarget == null ? path : linkTarget.FullName;
+                result.Add(Path.GetFullPath(finalPath));
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+        }
+
         return result;
     }
 
