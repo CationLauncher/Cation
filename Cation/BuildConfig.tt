@@ -1,0 +1,14 @@
+<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#
+    string Env(string variableName)
+    {
+        return Environment.GetEnvironmentVariable(variableName) ?? "";
+    }
+#>
+namespace Cation;
+
+public static class BuildConfig
+{
+    public const string MicrosoftClientId = "<#= Env("CATION_MICROSOFT_CLIENT_ID") #>";
+}

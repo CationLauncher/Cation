@@ -6,11 +6,24 @@
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <TransformOnBuild>true</TransformOnBuild>
+    <UseLegacyT4Preprocessing>true</UseLegacyT4Preprocessing>
   </PropertyGroup>
 
   <ItemGroup>
     <AvaloniaResource Include="Assets/**" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="$(IntermediateOutputPath)BuildConfig.cs" />
+    <T4Transform Include="BuildConfig.tt" />
+  </ItemGroup>
+  <Target Name="MoveT4" AfterTargets="TransformTemplatesCore">
+    <Move SourceFiles="@(GeneratedTemplates)" DestinationFolder="$(IntermediateOutputPath)" />
+  </Target>
+  <Target Name="CleanT4" AfterTargets="Clean">
+    <Delete Files="$(IntermediateOutputPath)BuildConfig.cs" />
+  </Target>
 
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.3.2" />
@@ -26,6 +39,7 @@
     <PackageReference Include="Microsoft.Identity.Client" Version="4.74.1" />
     <PackageReference Include="SkiaSharp" Version="3.119.0" />
     <PackageReference Include="System.Text.Json" Version="9.0.7" />
+    <PackageReference Include="T4.BuildTools" Version="3.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,9 +50,10 @@
   </ItemGroup>
 
   <Target Name="BuildJavaClass" BeforeTargets="BeforeBuild"
-        Inputs="Core/Java/JavaTest/JavaTest.java"
-        Outputs="Core/Java/JavaTest/JavaTest.class">
-    <Exec Command="javac -source 8 -target 8 -Xlint:-options Core/Java/JavaTest/JavaTest.java -d Core/Java/JavaTest" />
+          Inputs="Core/Java/JavaTest/JavaTest.java"
+          Outputs="Core/Java/JavaTest/JavaTest.class">
+    <Exec Command="javac -source 8 -target 8 -Xlint:-options Core/Java/JavaTest/JavaTest.java -d Core/Java/JavaTest"
+          EchoOff="true" />
   </Target>
   <Target Name="CleanJavaClass" AfterTargets="Clean">
     <Delete Files="Core/Java/JavaTest/JavaTest.class" />

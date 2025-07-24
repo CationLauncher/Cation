@@ -7,12 +7,11 @@ namespace Cation.Core.Microsoft;
 
 public static class Authentication
 {
-    private const string ClientId = "";
     private static readonly string[] Scopes = ["user.read"];
 
     public static async Task<AuthenticationResult?> GetAccessTokenAsync()
     {
-        var pca = PublicClientApplicationBuilder.Create(ClientId)
+        var pca = PublicClientApplicationBuilder.Create(BuildConfig.MicrosoftClientId)
             .WithAuthority(AzureCloudInstance.AzurePublic, "consumers")
             .WithDefaultRedirectUri()
             .Build();

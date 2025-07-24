@@ -5,6 +5,9 @@ on:
   pull_request:
     branches: [ "*" ]
 
+env:
+  CATION_MICROSOFT_CLIENT_ID: ${{ secrets.CATION_MICROSOFT_CLIENT_ID }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
