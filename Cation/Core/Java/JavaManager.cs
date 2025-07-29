@@ -107,14 +107,7 @@ public static class JavaManager
                 if (rawArch == "" || rawVersion == "" || rawVendor == "")
                     throw new Exception("Can not get Java info");
 
-                var version = rawVersion;
-                if (version.StartsWith("1."))
-                {
-                    version = version[2..];
-                    version = version.Replace("_", ".");
-                }
-
-                result.Add(new JavaVersion(Version.Parse(version), path, rawVendor, rawArch));
+                result.Add(new JavaVersion(rawVersion, path, rawVendor, rawArch));
             }
             catch
             {
