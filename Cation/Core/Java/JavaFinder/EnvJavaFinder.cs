@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Cation.Core.Java;
+namespace Cation.Core.Java.JavaFinder;
 
 public class EnvJavaFinder : IJavaFinder
 {
@@ -28,7 +28,7 @@ public class EnvJavaFinder : IJavaFinder
             result.AddRange(from p in path.Split(Path.PathSeparator)
                 let javaPath = Path.Combine(p, JavaManager.JavaExecutableName)
                 where File.Exists(javaPath)
-                where !(javaPath == "/usr/bin/java" && OperatingSystem.IsMacOS()) // Ignore MacOS java loader
+                where !(OperatingSystem.IsMacOS() && javaPath == "/usr/bin/java") // Ignore MacOS java loader
                 select p);
         }
 

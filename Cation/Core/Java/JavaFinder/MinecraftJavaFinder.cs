@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Cation.Core.Java;
+namespace Cation.Core.Java.JavaFinder;
 
 public class MinecraftJavaFinder : IJavaFinder
 {
@@ -30,7 +30,7 @@ public class MinecraftJavaFinder : IJavaFinder
         var result = new List<string>();
         foreach (var javaPaths in from runtime in runtimes
                  where Directory.Exists(runtime)
-                 select JavaManager.FindJavaBinPathRecurse(runtime))
+                 select Utils.FindJavaBinPathRecurse(runtime))
         {
             result.AddRange(javaPaths);
         }

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Cation.Core.Java;
+namespace Cation.Core.Java.JavaFinder;
 
 public interface IJavaFinder
 {

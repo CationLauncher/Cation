@@ -1,3 +1,4 @@
+using Cation.Core.Java.JavaFinder;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -20,7 +21,7 @@ public static class JavaManager
             Finders.Add(new MacJavaFinder());
     }
 
-    public static IEnumerable<string> Find()
+    public static IEnumerable<string> FindJavaPath()
     {
         var result = new HashSet<string>();
         foreach (var path in Finders.SelectMany(finder => finder.Find()))
@@ -43,40 +44,9 @@ public static class JavaManager
     private static string JavaExecutableExtension => OperatingSystem.IsWindows() ? ".exe" : "";
     public static string JavaExecutableName => "java" + JavaExecutableExtension;
 
-    public static List<string> FindJavaBinPathRecurse(string root)
-    {
-        var result = new List<string>();
-
-        Recurse(root);
-        return result;
-
-        void Recurse(string path)
-        {
-            try
-            {
-                var bin = Path.Combine(path, "bin");
-                var javaPath = Path.Combine(bin, JavaExecutableName);
-                if (File.Exists(javaPath))
-                {
-                    result.Add(bin);
-                    return;
-                }
-
-                foreach (var dir in Directory.EnumerateDirectories(path))
-                {
-                    Recurse(dir);
-                }
-            }
-            catch (Exception)
-            {
-                // ignored
-            }
-        }
-    }
-
     public static List<JavaVersion> GetJavaList()
     {
-        var paths = Find();
+        var paths = FindJavaPath();
         var result = new List<JavaVersion>();
         foreach (var path in paths)
         {

@@ -5,9 +5,9 @@ namespace Cation.Test.Core;
 public class JavaManagerTest
 {
     [Test]
-    public void Find()
+    public void FindJavaPath()
     {
-        var result = JavaManager.Find();
+        var result = JavaManager.FindJavaPath();
         Assert.That(result, Is.Not.Empty);
     }
 
