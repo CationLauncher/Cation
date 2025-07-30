@@ -13,6 +13,8 @@ public class JavaVersion
     public JavaArch Arch { get; init; }
     public string ArchRaw { get; init; }
 
+    public bool IsCommercialOracle => Vendor == JavaVendor.Oracle && Version >= new Version(8, 0, 211);
+
     public JavaVersion(string version, string path, string vendor, string arch)
     {
         VersionRaw = version;
