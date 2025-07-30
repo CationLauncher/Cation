@@ -28,6 +28,6 @@ public partial class JsonContext : JsonSerializerContext
         CancellationToken cancellationToken = default)
     {
         return (TValue?)await JsonSerializer.DeserializeAsync(utf8Json, Default.GetTypeInfo(typeof(TValue))!,
-                                                              cancellationToken);
+            cancellationToken);
     }
 }
