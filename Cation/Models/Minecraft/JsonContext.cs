@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace Cation.Models.Minecraft;
 
+[JsonSourceGenerationOptions(
+    WriteIndented = true,
+    PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase
+)]
 [JsonSerializable(typeof(VersionManifest))]
 [JsonSerializable(typeof(VersionManifest.LatestInfo))]
 [JsonSerializable(typeof(VersionManifest.VersionInfo))]
