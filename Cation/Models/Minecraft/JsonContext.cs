@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace Cation.Models.Minecraft;
 
+[JsonSourceGenerationOptions(
+    WriteIndented = true,
+    PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase
+)]
 [JsonSerializable(typeof(VersionManifest))]
 [JsonSerializable(typeof(VersionManifest.LatestInfo))]
 [JsonSerializable(typeof(VersionManifest.VersionInfo))]
@@ -24,6 +28,6 @@ public partial class JsonContext : JsonSerializerContext
         CancellationToken cancellationToken = default)
     {
         return (TValue?)await JsonSerializer.DeserializeAsync(utf8Json, Default.GetTypeInfo(typeof(TValue))!,
-            cancellationToken);
+                                                              cancellationToken);
     }
 }
