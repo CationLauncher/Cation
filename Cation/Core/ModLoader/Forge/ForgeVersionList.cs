@@ -5,7 +5,7 @@ using System.Xml.Linq;
 using System;
 using System.Linq;
 
-namespace Cation.Core.Forge;
+namespace Cation.Core.ModLoader.Forge;
 
 public static class ForgeVersionList
 {

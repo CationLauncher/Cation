@@ -1,6 +1,6 @@
 using System;
 
-namespace Cation.Core.Forge;
+namespace Cation.Core.ModLoader.Forge;
 
 public class ForgeVersion(
     Version version,

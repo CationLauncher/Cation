@@ -1,4 +1,4 @@
-using Cation.Core.Forge;
+using Cation.Core.ModLoader.Forge;
 
 namespace Cation.Test.Core;
 
