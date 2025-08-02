@@ -2,23 +2,40 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
+using Cation.Core.Network;
 using Cation.ViewModels;
 using Cation.Views;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Net.Http;
 
 namespace Cation;
 
 public class App : Application
 {
+    private static IServiceProvider Services { get; set; } = null!;
+    public static IHttpClientFactory HttpClientFactory => Services.GetRequiredService<IHttpClientFactory>();
+
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
     }
 
+    internal static void ConfigureServices()
+    {
+        var services = new ServiceCollection();
+        services.AddHttpClient("MinecraftClient", client => client.SetupHttpClient());
+        services.AddHttpClient("ForgeClient", client => client.SetupHttpClient());
+        Services = services.BuildServiceProvider();
+    }
+
     [ExcludeFromCodeCoverage]
     public override void OnFrameworkInitializationCompleted()
     {
+        ConfigureServices();
+
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             // Avoid duplicate validations from both Avalonia and the CommunityToolkit.

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using System;
@@ -14,7 +13,7 @@ public static class ForgeVersionList
 
     public static async Task<List<ForgeVersion>> GetForgeVersionListAsync()
     {
-        var httpClient = new HttpClient();
+        using var httpClient = App.HttpClientFactory.CreateClient("ForgeClient");
         await using var stream = await httpClient.GetStreamAsync(ForgeMavenMetadataUrl);
         var doc = XDocument.Load(stream);
 

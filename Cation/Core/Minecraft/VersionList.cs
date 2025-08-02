@@ -1,7 +1,6 @@
 using Cation.Models.Minecraft;
 using System;
 using System.IO;
-using System.Net.Http;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 
@@ -18,7 +17,7 @@ public static class VersionList
         if (_versionListCache is not null)
             return _versionListCache;
 
-        using var httpClient = new HttpClient();
+        using var httpClient = App.HttpClientFactory.CreateClient("MinecraftClient");
         await using var stream = await httpClient.GetStreamAsync(VersionManifestUrl);
         var manifest = await JsonContext.DeserializeAsync<VersionManifest>(stream);
         manifest?.Versions.Sort((a, b) => b.ReleaseTime.CompareTo(a.ReleaseTime));
@@ -44,7 +43,7 @@ public static class VersionList
         if (versionInfo is null)
             return null;
 
-        using var httpClient = new HttpClient();
+        using var httpClient = App.HttpClientFactory.CreateClient("MinecraftClient");
         var responseBytes = await httpClient.GetByteArrayAsync(versionInfo.Url);
 
         var hash = SHA1.HashData(responseBytes);

@@ -7,6 +7,7 @@ public class MinecraftVersionListTest
     [SetUp]
     public async Task Setup()
     {
+        App.ConfigureServices();
         // Cache the version list to avoid repeated network requests
         await VersionList.GetVersionListAsync();
     }
