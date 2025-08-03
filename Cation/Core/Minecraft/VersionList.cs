@@ -19,7 +19,7 @@ public static class VersionList
 
         using var httpClient = App.HttpClientFactory.CreateClient("MinecraftClient");
         await using var stream = await httpClient.GetStreamAsync(VersionManifestUrl);
-        var manifest = await JsonContext.DeserializeAsync<VersionManifest>(stream);
+        var manifest = await MinecraftJsonContext.DeserializeAsync<VersionManifest>(stream);
         manifest?.Versions.Sort((a, b) => b.ReleaseTime.CompareTo(a.ReleaseTime));
         _versionListCache = manifest;
         return _versionListCache;
@@ -55,6 +55,6 @@ public static class VersionList
         }
 
         using var stream = new MemoryStream(responseBytes);
-        return await JsonContext.DeserializeAsync<Client>(stream);
+        return await MinecraftJsonContext.DeserializeAsync<Client>(stream);
     }
 }

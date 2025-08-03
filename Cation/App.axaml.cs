@@ -7,6 +7,7 @@ using Cation.ViewModels;
 using Cation.Views;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net.Http;
@@ -28,6 +29,14 @@ public class App : Application
         var services = new ServiceCollection();
         services.AddHttpClient("MinecraftClient", client => client.SetupHttpClient());
         services.AddHttpClient("ForgeClient", client => client.SetupHttpClient());
+        services.AddHttpClient("CurseForgeClient", client =>
+        {
+            client.SetupHttpClient(new Dictionary<string, string>
+            {
+                { "x-api-key", BuildConfig.CurseForgeApiKey }
+            });
+            client.BaseAddress = new Uri("https://api.curseforge.com");
+        });
         Services = services.BuildServiceProvider();
     }
 

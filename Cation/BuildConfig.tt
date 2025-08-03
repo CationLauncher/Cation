@@ -11,4 +11,5 @@ namespace Cation;
 public static class BuildConfig
 {
     public const string MicrosoftClientId = "<#= Env("CATION_MICROSOFT_CLIENT_ID") #>";
+    public const string CurseForgeApiKey = "<#= Env("CATION_CURSEFORGE_API_KEY") #>";
 }

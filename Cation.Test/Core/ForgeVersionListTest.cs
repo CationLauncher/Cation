@@ -2,14 +2,8 @@ using Cation.Core.ModLoader.Forge;
 
 namespace Cation.Test.Core;
 
-public class ForgeVersionListTest
+public class ForgeVersionListTest : CationTestBase
 {
-    [SetUp]
-    public void Setup()
-    {
-        App.ConfigureServices();
-    }
-
     [Test]
     public async Task GetForgeVersionList()
     {

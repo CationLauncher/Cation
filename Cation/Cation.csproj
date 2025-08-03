@@ -51,6 +51,10 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Cation.SourceGenerators\Cation.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
   <Target Name="BuildJavaClass" BeforeTargets="BeforeBuild"
           Inputs="Core/Java/JavaTest/JavaTest.java"
           Outputs="Core/Java/JavaTest/JavaTest.class">

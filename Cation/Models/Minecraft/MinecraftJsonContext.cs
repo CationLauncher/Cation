@@ -1,8 +1,4 @@
-using System.IO;
-using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Cation.Models.Minecraft;
 
@@ -21,13 +17,6 @@ namespace Cation.Models.Minecraft;
 [JsonSerializable(typeof(Client.LibraryInfo))]
 [JsonSerializable(typeof(Client.ArgumentsInfo))]
 [JsonSerializable(typeof(Client.LoggingInfo))]
-public partial class JsonContext : JsonSerializerContext
+public partial class MinecraftJsonContext : JsonSerializerContext
 {
-    public static async Task<TValue?> DeserializeAsync<TValue>(
-        Stream utf8Json,
-        CancellationToken cancellationToken = default)
-    {
-        return (TValue?)await JsonSerializer.DeserializeAsync(utf8Json, Default.GetTypeInfo(typeof(TValue))!,
-            cancellationToken);
-    }
 }

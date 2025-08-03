@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cation", "Cation\Cation.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cation.Test", "Cation.Test\Cation.Test.csproj", "{4115F12E-B857-45DF-88EF-FE8CF4FC3C79}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cation.SourceGenerators", "Cation.SourceGenerators\Cation.SourceGenerators.csproj", "{67A1A3DD-2BFB-47F8-BA59-A023B2726B14}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{4115F12E-B857-45DF-88EF-FE8CF4FC3C79}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4115F12E-B857-45DF-88EF-FE8CF4FC3C79}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4115F12E-B857-45DF-88EF-FE8CF4FC3C79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67A1A3DD-2BFB-47F8-BA59-A023B2726B14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67A1A3DD-2BFB-47F8-BA59-A023B2726B14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67A1A3DD-2BFB-47F8-BA59-A023B2726B14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67A1A3DD-2BFB-47F8-BA59-A023B2726B14}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

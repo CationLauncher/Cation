@@ -2,7 +2,7 @@ using Cation.Core.Java;
 
 namespace Cation.Test.Core;
 
-public class JavaManagerTest
+public class JavaManagerTest : CationTestBase
 {
     [Test]
     public void FindJavaPath()

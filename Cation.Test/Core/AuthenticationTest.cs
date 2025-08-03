@@ -2,7 +2,7 @@ using Cation.Core.Microsoft;
 
 namespace Cation.Test.Core;
 
-public class AuthenticationTest
+public class AuthenticationTest : CationTestBase
 {
     [Test]
     [Explicit]
