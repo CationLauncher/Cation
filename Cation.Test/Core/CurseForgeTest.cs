@@ -9,6 +9,7 @@ public class CurseForgeTest : CationTestBase
     public async Task GetModCategoriesTest()
     {
         var modCategories = await CurseForgeApi.GetCategories(ClassId.Mod);
+        Assert.That(modCategories, Is.Not.Null);
         Assert.That(modCategories, Is.Not.Empty);
 
         var testForNull = await CurseForgeApi.GetCategories((ClassId)1234);
