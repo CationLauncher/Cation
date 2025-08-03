@@ -7,6 +7,7 @@ on:
 
 env:
   CATION_MICROSOFT_CLIENT_ID: ${{ secrets.CATION_MICROSOFT_CLIENT_ID }}
+  CATION_CURSEFORGE_API_KEY: ${{ secrets.CATION_CURSEFORGE_API_KEY }}
 
 jobs:
   build:
