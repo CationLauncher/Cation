@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Cation.Core.Java.JavaFinder;
@@ -6,6 +7,6 @@ public class MacJavaFinder : IJavaFinder
 {
     public IEnumerable<string> Find()
     {
-        return Utils.FindJavaBinPathRecurse("/Library/Java/JavaVirtualMachines");
+        return !OperatingSystem.IsMacOS() ? [] : Utils.FindJavaBinPathRecurse("/Library/Java/JavaVirtualMachines");
     }
 }

@@ -40,7 +40,10 @@ public class JavaVersion
 
         Arch = arch switch
         {
+            "x86" => JavaArch.X86,
             "i386" => JavaArch.X86,
+            "i486" => JavaArch.X86,
+            "i586" => JavaArch.X86,
             "i686" => JavaArch.X86,
             "x86_64" => JavaArch.X64,
             "amd64" => JavaArch.X64,

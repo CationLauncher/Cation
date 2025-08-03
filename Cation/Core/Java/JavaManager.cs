@@ -12,14 +12,10 @@ public static class JavaManager
     private static readonly List<IJavaFinder> Finders =
     [
         new EnvJavaFinder(),
-        new MinecraftJavaFinder()
+        new MinecraftJavaFinder(),
+        new MacJavaFinder(),
+        new RegistryJavaFinder(),
     ];
-
-    static JavaManager()
-    {
-        if (OperatingSystem.IsMacOS())
-            Finders.Add(new MacJavaFinder());
-    }
 
     public static IEnumerable<string> FindJavaPath()
     {
