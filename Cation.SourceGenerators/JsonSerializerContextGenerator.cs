@@ -53,6 +53,16 @@ partial class {className}
         return (TValue?)await JsonSerializer.DeserializeAsync(utf8Json, Default.GetTypeInfo(typeof(TValue))!,
             cancellationToken);
     }}
+
+    public static TValue? Deserialize<TValue>(Stream utf8Json)
+    {{
+        return (TValue?)JsonSerializer.Deserialize(utf8Json, Default.GetTypeInfo(typeof(TValue))!);
+    }}
+
+    public static TValue? Deserialize<TValue>(JsonElement element)
+    {{
+        return element.Deserialize<TValue>(Default.Options);
+    }}
 }}
 ";
             context.AddSource($"{className}.g.cs", source);

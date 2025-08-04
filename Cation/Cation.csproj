@@ -41,6 +41,7 @@
     <PackageReference Include="Microsoft.Identity.Client" Version="4.74.1" />
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
     <PackageReference Include="SkiaSharp" Version="3.119.0" />
+    <PackageReference Include="System.IO.Compression.ZipFile" Version="4.3.0" />
     <PackageReference Include="System.Text.Json" Version="9.0.7" />
     <PackageReference Include="T4.BuildTools" Version="3.0.0" />
   </ItemGroup>

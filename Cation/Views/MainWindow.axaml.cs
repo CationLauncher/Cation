@@ -1,8 +1,9 @@
-using Avalonia.Controls;
+using Cation.Controls;
+using Cation.ViewModels;
 
 namespace Cation.Views;
 
-public partial class MainWindow : Window
+public partial class MainWindow : CationWindow<MainWindowViewModel>
 {
     public MainWindow()
     {

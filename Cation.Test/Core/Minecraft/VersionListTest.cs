@@ -1,8 +1,8 @@
 ﻿using Cation.Core.Minecraft;
 
-namespace Cation.Test.Core;
+namespace Cation.Test.Core.Minecraft;
 
-public class MinecraftVersionListTest
+public class VersionListTest : CationTestBase
 {
     [SetUp]
     public async Task Setup()

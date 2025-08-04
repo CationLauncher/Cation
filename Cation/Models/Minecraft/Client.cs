@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 
 namespace Cation.Models.Minecraft;
 
@@ -86,8 +87,8 @@ public class Client
 
     public class ArgumentsInfo
     {
-        public List<object>? Game { get; set; }
-        public List<object>? Jvm { get; set; }
+        public List<JsonElement>? Game { get; set; }
+        public List<JsonElement>? Jvm { get; set; }
     }
 
     public class LibraryInfo

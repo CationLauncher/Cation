@@ -39,6 +39,7 @@ public static class JavaManager
 
     private static string JavaExecutableExtension => OperatingSystem.IsWindows() ? ".exe" : "";
     public static string JavaExecutableName => "java" + JavaExecutableExtension;
+    public static string GameExecutableName => OperatingSystem.IsWindows() ? "javaw.exe" : "java";
 
     public static List<JavaVersion> GetJavaList()
     {
