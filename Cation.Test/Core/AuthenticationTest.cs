@@ -8,7 +8,11 @@ public class AuthenticationTest : CationTestBase
     [Explicit]
     public async Task GetAccessTokenTest()
     {
-        var token = await Authentication.GetAccessTokenAsync();
+        var token = await Authentication.GetMicrosoftAccessTokenAsync(deviceCodeResult =>
+        {
+            Console.WriteLine(deviceCodeResult.Message);
+            return Task.FromResult(0);
+        });
         Assert.That(token, Is.Not.Null);
     }
 }

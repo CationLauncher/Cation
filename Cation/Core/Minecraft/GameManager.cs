@@ -67,7 +67,7 @@ public static class GameManager
         return result;
     }
 
-    public static string? GetGameArguments(string gameInstance, string username)
+    public static string? GetGameArguments(string gameInstance, string username, string userType)
     {
         var instanceName = Path.GetFileName(gameInstance);
         var jsonPath = Path.Combine(gameInstance, instanceName + ".json");
@@ -99,7 +99,7 @@ public static class GameManager
             { "auth_access_token", "\"\"" },
             { "clientid", "\"\"" },
             { "auth_xuid", "\"\"" },
-            { "user_type", "msa" },
+            { "user_type", userType },
             { "version_type", versionManifest.Type },
             { "classpath", $"\"{GenerateClassPath(minecraftPath, versionManifest)}\"" },
             { "main_class", versionManifest.MainClass },

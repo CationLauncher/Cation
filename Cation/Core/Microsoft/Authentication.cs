@@ -7,9 +7,10 @@ namespace Cation.Core.Microsoft;
 
 public static class Authentication
 {
-    private static readonly string[] Scopes = ["user.read"];
+    private static readonly string[] Scopes = ["XboxLive.signin"];
 
-    public static async Task<AuthenticationResult?> GetAccessTokenAsync()
+    public static async Task<AuthenticationResult?> GetMicrosoftAccessTokenAsync(
+        Func<DeviceCodeResult, Task> deviceCodeResultCallback)
     {
         var pca = PublicClientApplicationBuilder.Create(BuildConfig.MicrosoftClientId)
             .WithAuthority(AzureCloudInstance.AzurePublic, "consumers")
@@ -26,15 +27,8 @@ public static class Authentication
         {
             try
             {
-                var result = await pca.AcquireTokenWithDeviceCode(Scopes,
-                    deviceCodeResult =>
-                    {
-                        Console.WriteLine(deviceCodeResult.Message);
-                        return Task.FromResult(0);
-                    }).ExecuteAsync().ConfigureAwait(false);
-
-                Console.WriteLine(result.Account.Username);
-                return result;
+                return await pca.AcquireTokenWithDeviceCode(Scopes, deviceCodeResultCallback).ExecuteAsync()
+                    .ConfigureAwait(false);
             }
             catch (Exception)
             {

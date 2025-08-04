@@ -10,9 +10,22 @@
         <vm:HomePageViewModel />
     </Design.DataContext>
     <StackPanel Orientation="Vertical" Spacing="10">
-        <ComboBox ItemsSource="{Binding JavaVersions}" SelectedIndex="{Binding SelectedJavaVersionIndex}" />
-        <ComboBox ItemsSource="{Binding GameInstances}" SelectedIndex="{Binding SelectedGameInstanceIndex}" />
-        <TextBox Text="{Binding Username}" />
+        <ComboBox ItemsSource="{Binding JavaVersions}" SelectedIndex="0" SelectedValue="{Binding SelectedJavaVersion}" />
+        <ComboBox ItemsSource="{Binding GameInstances}" SelectedIndex="0"
+                  SelectedValue="{Binding SelectedGameInstance}" />
+        <ComboBox ItemsSource="{Binding UserTypes}" SelectedIndex="0" SelectedValue="{Binding SelectedUserType}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Display}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <TextBox IsVisible="{Binding SelectedUserType.IsOfflineUserType}" Text="{Binding Username}" />
+        <StackPanel IsVisible="{Binding SelectedUserType.IsMicrosoftUserType}" Orientation="Horizontal">
+            <Button Click="LoginButton_OnClick">Login</Button>
+            <Label Content="{Binding MsCode}" />
+            <Label Content="{Binding MsUsername}" />
+        </StackPanel>
         <Button Click="StartButton_OnClick">Start</Button>
     </StackPanel>
 </UserControl>
