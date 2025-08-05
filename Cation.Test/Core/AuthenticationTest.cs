@@ -1,4 +1,4 @@
-using Cation.Core.Microsoft;
+using Cation.Core.Authentication;
 
 namespace Cation.Test.Core;
 
@@ -6,13 +6,13 @@ public class AuthenticationTest : CationTestBase
 {
     [Test]
     [Explicit]
-    public async Task GetAccessTokenTest()
+    public async Task AuthenticateWithMsa()
     {
-        var token = await Authentication.GetMicrosoftAccessTokenAsync(deviceCodeResult =>
+        var profile = await Authentication.AuthenticateWithMsaAsync(deviceCodeResult =>
         {
             Console.WriteLine(deviceCodeResult.Message);
             return Task.FromResult(0);
         });
-        Assert.That(token, Is.Not.Null);
+        Assert.That(profile, Is.Not.Null);
     }
 }

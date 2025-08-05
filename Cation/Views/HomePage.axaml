@@ -10,9 +10,8 @@
         <vm:HomePageViewModel />
     </Design.DataContext>
     <StackPanel Orientation="Vertical" Spacing="10">
-        <ComboBox ItemsSource="{Binding JavaVersions}" SelectedIndex="0" SelectedValue="{Binding SelectedJavaVersion}" />
-        <ComboBox ItemsSource="{Binding GameInstances}" SelectedIndex="0"
-                  SelectedValue="{Binding SelectedGameInstance}" />
+        <ComboBox ItemsSource="{Binding JavaVersions}" SelectedValue="{Binding SelectedJavaVersion}" />
+        <ComboBox ItemsSource="{Binding GameInstances}" SelectedValue="{Binding SelectedGameInstance}" />
         <ComboBox ItemsSource="{Binding UserTypes}" SelectedIndex="0" SelectedValue="{Binding SelectedUserType}">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
@@ -24,7 +23,7 @@
         <StackPanel IsVisible="{Binding SelectedUserType.IsMicrosoftUserType}" Orientation="Horizontal">
             <Button Click="LoginButton_OnClick">Login</Button>
             <Label Content="{Binding MsCode}" />
-            <Label Content="{Binding MsUsername}" />
+            <Label Content="{Binding MinecraftProfile.Username}" />
         </StackPanel>
         <Button Click="StartButton_OnClick">Start</Button>
     </StackPanel>

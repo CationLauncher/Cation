@@ -36,6 +36,20 @@ public class App : Application
             });
             client.BaseAddress = new Uri("https://api.curseforge.com");
         });
+        services.AddHttpClient("MicrosoftClient", client =>
+        {
+            client.SetupHttpClient(new Dictionary<string, string>
+            {
+                { "Accept", "application/json" }
+            });
+        });
+        services.AddHttpClient("MinecraftClient", client =>
+        {
+            client.SetupHttpClient(new Dictionary<string, string>
+            {
+                { "Accept", "application/json" }
+            });
+        });
         Services = services.BuildServiceProvider();
     }
 

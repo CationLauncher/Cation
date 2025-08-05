@@ -1,8 +1,8 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Cation.Controls;
+using Cation.Core.Authentication;
 using Cation.Core.Java;
-using Cation.Core.Microsoft;
 using Cation.Core.Minecraft;
 using Cation.ViewModels;
 using System;
@@ -20,17 +20,42 @@ public partial class HomePage : CationUserControl<HomePageViewModel>
         InitializeComponent();
 
         ViewModel.JavaVersions = JavaManager.GetJavaList();
+        if (ViewModel.JavaVersions.Count > 0)
+            ViewModel.SelectedJavaVersion = ViewModel.JavaVersions[0];
         ViewModel.GameInstances = GameManager.GetGameInstances();
+        if (ViewModel.GameInstances.Count > 0)
+            ViewModel.SelectedGameInstance = ViewModel.GameInstances[0];
     }
 
     private void StartButton_OnClick(object? sender, RoutedEventArgs e)
     {
         var javaVersion = ViewModel.SelectedJavaVersion;
+        if (javaVersion == null)
+        {
+            Console.WriteLine("No Java version selected.");
+            return;
+        }
+
         var gameInstance = ViewModel.SelectedGameInstance;
+        if (gameInstance == null)
+        {
+            Console.WriteLine("No game instance selected.");
+            return;
+        }
+
         var userType = ViewModel.SelectedUserType.Value;
+        if (userType == "msa" && ViewModel.MinecraftProfile == null)
+        {
+            Console.WriteLine("No Microsoft account profile found. Please log in first.");
+            return;
+        }
+
+        var username = userType == "msa" ? ViewModel.MinecraftProfile!.Username : ViewModel.Username;
+        var userId = userType == "msa" ? ViewModel.MinecraftProfile!.Id : "";
+        var accessToken = userType == "msa" ? ViewModel.MinecraftProfile!.AccessToken : "";
 
         var javaExe = Path.Combine(javaVersion.Path, JavaManager.GameExecutableName);
-        var args = GameManager.GetGameArguments(gameInstance, ViewModel.Username, userType);
+        var args = GameManager.GetGameArguments(gameInstance, username, userType, userId, accessToken);
         if (args == null)
         {
             Console.WriteLine("Failed to get game arguments.");
@@ -55,15 +80,13 @@ public partial class HomePage : CationUserControl<HomePageViewModel>
         };
 
         process.Start();
-        Console.WriteLine(process.StandardOutput.ReadToEnd());
-        Console.WriteLine(process.StandardError.ReadToEnd());
     }
 
     private async void LoginButton_OnClick(object? sender, RoutedEventArgs e)
     {
         try
         {
-            var result = await Authentication.GetMicrosoftAccessTokenAsync(deviceCodeResult =>
+            var result = await Authentication.AuthenticateWithMsaAsync(deviceCodeResult =>
             {
                 ViewModel.MsCode = deviceCodeResult.UserCode;
                 var launcher = TopLevel.GetTopLevel(this)?.Launcher;
@@ -73,8 +96,8 @@ public partial class HomePage : CationUserControl<HomePageViewModel>
             if (result == null)
                 return;
 
-            ViewModel.MsUsername = result.Account.Username;
-            ViewModel.AccessToken = result.AccessToken;
+            ViewModel.MsCode = "";
+            ViewModel.MinecraftProfile = result;
         }
         catch (Exception exception)
         {

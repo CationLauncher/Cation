@@ -3,13 +3,13 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Cation.Core.Microsoft;
+namespace Cation.Core.Authentication;
 
-public static class Authentication
+public static class MicrosoftAuthentication
 {
     private static readonly string[] Scopes = ["XboxLive.signin"];
 
-    public static async Task<AuthenticationResult?> GetMicrosoftAccessTokenAsync(
+    public static async Task<AuthenticationResult?> GetAccessTokenAsync(
         Func<DeviceCodeResult, Task> deviceCodeResultCallback)
     {
         var pca = PublicClientApplicationBuilder.Create(BuildConfig.MicrosoftClientId)

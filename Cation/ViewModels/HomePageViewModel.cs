@@ -1,3 +1,4 @@
+using Cation.Core.Authentication;
 using Cation.Core.Java;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.Generic;
@@ -11,13 +12,13 @@ public partial class HomePageViewModel : ObservableObject
     private List<JavaVersion> _javaVersions;
 
     [ObservableProperty]
-    private JavaVersion _selectedJavaVersion;
+    private JavaVersion? _selectedJavaVersion;
 
     [ObservableProperty]
     private List<string> _gameInstances;
 
     [ObservableProperty]
-    private string _selectedGameInstance;
+    private string? _selectedGameInstance;
 
     [ObservableProperty]
     private string _username = "shatyuka";
@@ -40,11 +41,8 @@ public partial class HomePageViewModel : ObservableObject
     }
 
     [ObservableProperty]
-    private string _msUsername = "";
-
-    [ObservableProperty]
     private string _msCode = "";
 
     [ObservableProperty]
-    private string _accessToken = "";
+    private MinecraftProfile? _minecraftProfile;
 }

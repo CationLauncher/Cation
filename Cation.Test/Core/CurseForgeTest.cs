@@ -6,7 +6,7 @@ namespace Cation.Test.Core;
 public class CurseForgeTest : CationTestBase
 {
     [Test]
-    public async Task GetModCategoriesTest()
+    public async Task GetModCategories()
     {
         var modCategories = await CurseForgeApi.GetCategories(ClassId.Mod);
         Assert.That(modCategories, Is.Not.Null);
@@ -17,7 +17,7 @@ public class CurseForgeTest : CationTestBase
     }
 
     [Test]
-    public async Task SearchModsLegacyTest()
+    public async Task SearchModsLegacy()
     {
         var response = await CurseForgeApi.SearchModsLegacyAsync(ClassId.Mod, "Create Ratatouille",
             ModsSearchSortFieldLegacy.Relevancy);
