@@ -1,4 +1,5 @@
 using Cation.Core.Authentication;
+using System.Diagnostics;
 
 namespace Cation.Test.Core;
 
@@ -10,7 +11,7 @@ public class AuthenticationTest : CationTestBase
     {
         var profile = await Authentication.AuthenticateWithMsaAsync(deviceCodeResult =>
         {
-            Console.WriteLine(deviceCodeResult.Message);
+            Debug.WriteLine(deviceCodeResult.Message);
             return Task.FromResult(0);
         });
         Assert.That(profile, Is.Not.Null);

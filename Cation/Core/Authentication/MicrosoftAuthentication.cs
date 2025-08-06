@@ -21,8 +21,8 @@ public static class MicrosoftAuthentication
             string configDir;
             if (OperatingSystem.IsMacOS() || OperatingSystem.IsWindows())
             {
-                var appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-                configDir = Path.Combine(appdata, "CationLauncher");
+                var local = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                configDir = Path.Combine(local, "CationLauncher");
             }
             else
             {
