@@ -1,5 +1,7 @@
 using Microsoft.Identity.Client;
+using Microsoft.Identity.Client.Extensions.Msal;
 using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,25 +11,58 @@ public static class MicrosoftAuthentication
 {
     private static readonly string[] Scopes = ["XboxLive.signin"];
 
+    private static IPublicClientApplication? _pca;
+
     public static async Task<AuthenticationResult?> GetAccessTokenAsync(
         Func<DeviceCodeResult, Task> deviceCodeResultCallback)
     {
-        var pca = PublicClientApplicationBuilder.Create(BuildConfig.MicrosoftClientId)
-            .WithAuthority(AzureCloudInstance.AzurePublic, "consumers")
-            .WithDefaultRedirectUri()
-            .Build();
+        if (_pca == null)
+        {
+            string configDir;
+            if (OperatingSystem.IsMacOS() || OperatingSystem.IsWindows())
+            {
+                var appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                configDir = Path.Combine(appdata, "CationLauncher");
+            }
+            else
+            {
+                var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                configDir = Path.Combine(home, ".config", "CationLauncher");
+            }
 
-        var accounts = await pca.GetAccountsAsync();
+            var storageProperties =
+                new StorageCreationPropertiesBuilder("msa_cache", configDir)
+                    .WithMacKeyChain(
+                        "Cation Launcher",
+                        "msa")
+                    .WithLinuxKeyring(
+                        "com.cationlauncher.cation",
+                        "default",
+                        "Credentials used by Cation Launcher",
+                        default,
+                        default)
+                    .Build();
+
+            _pca = PublicClientApplicationBuilder.Create(BuildConfig.MicrosoftClientId)
+                .WithAuthority(AzureCloudInstance.AzurePublic, "consumers")
+                .WithDefaultRedirectUri()
+                .Build();
+
+            var cacheHelper = await MsalCacheHelper.CreateAsync(storageProperties);
+            cacheHelper.RegisterCache(_pca.UserTokenCache);
+        }
+
+        var accounts = await _pca.GetAccountsAsync();
 
         try
         {
-            return await pca.AcquireTokenSilent(Scopes, accounts.FirstOrDefault()).ExecuteAsync();
+            return await _pca.AcquireTokenSilent(Scopes, accounts.FirstOrDefault()).ExecuteAsync();
         }
         catch (Exception)
         {
             try
             {
-                return await pca.AcquireTokenWithDeviceCode(Scopes, deviceCodeResultCallback).ExecuteAsync()
+                return await _pca.AcquireTokenWithDeviceCode(Scopes, deviceCodeResultCallback).ExecuteAsync()
                     .ConfigureAwait(false);
             }
             catch (Exception)
