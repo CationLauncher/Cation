@@ -1,59 +1,32 @@
-using System.Net.Http;
+using Cation.Models.Authentication;
 using System.Net.Http.Headers;
-using System.Text.Json;
-using System.Text.Json.Nodes;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 namespace Cation.Core.Authentication;
 
 public static class MinecraftApi
 {
-    public static async Task<string?> LoginWithXboxAsync(XboxLiveToken xstsToken)
+    private const string BaseUrl = "https://api.minecraftservices.com";
+
+    public static async Task<AuthenticationLoginWithXboxResponse?> LoginWithXboxAsync(string userHash, string xstsToken)
     {
         using var httpClient = App.HttpClientFactory.CreateClient("MinecraftClient");
-        var request = $$"""
-                        {
-                            "identityToken": "XBL3.0 x={{xstsToken.UserHash}};{{xstsToken.Token}}"
-                        }
-                        """;
-        var httpContent = new StringContent(request);
-        httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-        using var response =
-            await httpClient.PostAsync("https://api.minecraftservices.com/authentication/login_with_xbox", httpContent);
-        JsonObject? json;
-        try
+        AuthenticationLoginWithXboxRequest request = new()
         {
-            json = await JsonSerializer.DeserializeAsync<JsonObject>(await response.Content.ReadAsStreamAsync());
-        }
-        catch (JsonException)
-        {
-            return null;
-        }
-
-        return json?["access_token"]?.GetValue<string>();
+            IdentityToken = $"XBL3.0 x={userHash};{xstsToken}"
+        };
+        using var responseMessage = await httpClient.PostAsJsonAsync($"{BaseUrl}/authentication/login_with_xbox",
+            request, AuthMcJsonContext.Default.AuthenticationLoginWithXboxRequest);
+        await using var stream = await responseMessage.Content.ReadAsStreamAsync();
+        return await AuthMcJsonContext.DeserializeAsync<AuthenticationLoginWithXboxResponse>(stream);
     }
 
-    public static async Task<MinecraftProfile?> GetProfileAsync(string minecraftToken)
+    public static async Task<MinecraftProfileResponse?> GetProfileAsync(string minecraftToken)
     {
         using var httpClient = App.HttpClientFactory.CreateClient("MinecraftClient");
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", minecraftToken);
-        await using var stream = await httpClient.GetStreamAsync("https://api.minecraftservices.com/minecraft/profile");
-        JsonObject? json;
-        try
-        {
-            json = await JsonSerializer.DeserializeAsync<JsonObject>(stream);
-        }
-        catch (JsonException)
-        {
-            return null;
-        }
-
-        if (json == null)
-            return null;
-        var id = json["id"]?.GetValue<string>();
-        var name = json["name"]?.GetValue<string>();
-        if (id == null || name == null)
-            return null;
-        return new MinecraftProfile(id, name, minecraftToken);
+        await using var stream = await httpClient.GetStreamAsync($"{BaseUrl}/minecraft/profile");
+        return await AuthMcJsonContext.DeserializeAsync<MinecraftProfileResponse>(stream);
     }
 }

@@ -1,84 +1,50 @@
-using System;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text.Json;
-using System.Text.Json.Nodes;
+using Cation.Models.Authentication;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 namespace Cation.Core.Authentication;
 
 public static class XboxLiveApi
 {
-    public static async Task<XboxLiveToken?> GetXblTokenAsync(string accessToken)
+    private const string UserBaseUrl = "https://user.auth.xboxlive.com/user";
+    private const string XstsBaseUrl = "https://xsts.auth.xboxlive.com/xsts";
+
+    public static async Task<UserAuthenticateResponse?> UserAuthenticateAsync(string accessToken)
     {
         using var httpClient = App.HttpClientFactory.CreateClient("MicrosoftClient");
-        var request = $$"""
-                        {
-                            "Properties": {
-                                "AuthMethod": "RPS",
-                                "SiteName": "user.auth.xboxlive.com",
-                                "RpsTicket": "d={{accessToken}}"
-                            },
-                            "RelyingParty": "http://auth.xboxlive.com",
-                            "TokenType": "JWT"
-                        }
-                        """;
-        var httpContent = new StringContent(request);
-        httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-        using var response =
-            await httpClient.PostAsync("https://user.auth.xboxlive.com/user/authenticate", httpContent);
-        JsonObject? json;
-        try
+        UserAuthenticateRequest request = new()
         {
-            json = await JsonSerializer.DeserializeAsync<JsonObject>(await response.Content.ReadAsStreamAsync());
-        }
-        catch (JsonException)
-        {
-            return null;
-        }
-        if (json == null)
-            return null;
-        var token = json["Token"]?.GetValue<string>();
-        var userHash = json["DisplayClaims"]?["xui"]?[0]?["uhs"]?.GetValue<string>();
-        if (token == null || userHash == null)
-            return null;
-        return new XboxLiveToken(userHash, token);
+            Properties = new UserAuthenticateRequestPropertiesInfo
+            {
+                AuthMethod = "RPS",
+                SiteName = "user.auth.xboxlive.com",
+                RpsTicket = $"d={accessToken}"
+            },
+            RelyingParty = "http://auth.xboxlive.com",
+            TokenType = "JWT"
+        };
+        using var responseMessage = await httpClient.PostAsJsonAsync($"{UserBaseUrl}/authenticate", request,
+            AuthMsJsonContext.Default.UserAuthenticateRequest);
+        await using var stream = await responseMessage.Content.ReadAsStreamAsync();
+        return await AuthMsJsonContext.DeserializeAsync<UserAuthenticateResponse>(stream);
     }
 
-    public static async Task<XboxLiveToken?> GetXstsTokenAsync(string xblToken)
+    public static async Task<XstsAuthorizeResponse?> XstsAuthorizeTokenAsync(string xblToken)
     {
         using var httpClient = App.HttpClientFactory.CreateClient("MicrosoftClient");
-        var request = $$"""
-                        {
-                            "Properties": {
-                                "SandboxId": "RETAIL",
-                                "UserTokens": [
-                                    "{{xblToken}}"
-                                ]
-                            },
-                            "RelyingParty": "rp://api.minecraftservices.com/",
-                            "TokenType": "JWT"
-                        }
-                        """;
-        var httpContent = new StringContent(request);
-        httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-        using var response =
-            await httpClient.PostAsync("https://xsts.auth.xboxlive.com/xsts/authorize", httpContent);
-        JsonObject? json;
-        try
+        XstsAuthorizeRequest request = new()
         {
-            json = await JsonSerializer.DeserializeAsync<JsonObject>(await response.Content.ReadAsStreamAsync());
-        }
-        catch (JsonException)
-        {
-            return null;
-        }
-        if (json == null)
-            return null;
-        var token = json["Token"]?.GetValue<string>();
-        var userHash = json["DisplayClaims"]?["xui"]?[0]?["uhs"]?.GetValue<string>();
-        if (token == null || userHash == null)
-            return null;
-        return new XboxLiveToken(userHash, token);
+            Properties = new XstsAuthorizeRequestPropertiesInfo
+            {
+                SandboxId = "RETAIL",
+                UserTokens = [xblToken]
+            },
+            RelyingParty = "rp://api.minecraftservices.com/",
+            TokenType = "JWT"
+        };
+        using var responseMessage = await httpClient.PostAsJsonAsync($"{XstsBaseUrl}/authorize", request,
+            AuthMsJsonContext.Default.XstsAuthorizeRequest);
+        await using var stream = await responseMessage.Content.ReadAsStreamAsync();
+        return await AuthMsJsonContext.DeserializeAsync<XstsAuthorizeResponse>(stream);
     }
 }

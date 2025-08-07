@@ -12,15 +12,21 @@ public static class Authentication
         var authenticationResult = await MicrosoftAuthentication.GetAccessTokenAsync(deviceCodeCallback);
         if (authenticationResult == null)
             return null;
-        var xblToken = await XboxLiveApi.GetXblTokenAsync(authenticationResult.AccessToken);
-        if (xblToken == null)
+        var userAuthenticate = await XboxLiveApi.UserAuthenticateAsync(authenticationResult.AccessToken);
+        if (userAuthenticate == null)
             return null;
-        var xstsToken = await XboxLiveApi.GetXstsTokenAsync(xblToken.Token);
-        if (xstsToken == null)
+        var xstsAuthorize = await XboxLiveApi.XstsAuthorizeTokenAsync(userAuthenticate.Token);
+        if (xstsAuthorize == null)
             return null;
-        var minecraftToken = await MinecraftApi.LoginWithXboxAsync(xstsToken);
+        if (xstsAuthorize.DisplayClaims.Xui.Count == 0)
+            return null;
+        var uhs = xstsAuthorize.DisplayClaims.Xui[0].Uhs;
+        var minecraftToken = await MinecraftApi.LoginWithXboxAsync(uhs, xstsAuthorize.Token);
         if (minecraftToken == null)
             return null;
-        return await MinecraftApi.GetProfileAsync(minecraftToken);
+        var profile = await MinecraftApi.GetProfileAsync(minecraftToken.AccessToken);
+        if (profile == null)
+            return null;
+        return new MinecraftProfile(profile.Id, profile.Name, minecraftToken.AccessToken);
     }
 }
