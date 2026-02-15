@@ -19,16 +19,16 @@ public class CurseForgeTest : CationTestBase
     [Test]
     public async Task SearchModsLegacy()
     {
-        var response = await CurseForgeApi.SearchModsLegacyAsync(ClassId.Mod, "Create: Ratatouille",
-            ModsSearchSortFieldLegacy.Relevancy);
+        var response = await CurseForgeApi.SearchModsAsync(ClassId.Mod, "Create: Ratatouille",
+            ModsSearchSortField.Featured);
         Assert.That(response, Is.Not.Null);
         var mods = response.Data;
         Assert.That(mods, Is.Not.Empty);
         var mod = mods[0];
         Assert.That(mod.Slug, Is.EqualTo("create-ratatouille"));
 
-        var testForEmpty = await CurseForgeApi.SearchModsLegacyAsync((ClassId)1234, "",
-            ModsSearchSortFieldLegacy.Relevancy);
+        var testForEmpty = await CurseForgeApi.SearchModsAsync((ClassId)1234, "",
+            ModsSearchSortField.Featured);
         Assert.That(testForEmpty, Is.Not.Null);
         Assert.That(testForEmpty.Data, Is.Empty);
     }

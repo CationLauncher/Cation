@@ -7,7 +7,7 @@ namespace Cation.Models.ModPlatform.CurseForge;
     PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase
 )]
 [JsonSerializable(typeof(GetCategoriesResponse))]
-[JsonSerializable(typeof(SearchModsLegacyResponse))]
+[JsonSerializable(typeof(SearchModsResponse))]
 public partial class CurseForgeJsonContext : JsonSerializerContext
 {
 }
